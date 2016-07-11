@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "jsx" : "react",
+    "allowSyntheticDefaultImports": true,
+    "module": "commonjs",
+    "sourceMap": true,
+    "allowJs": true,
+    "outDir": "build"
+  },
+  "exclude": ["node_modules"],
+  "files": ["typings/index.d.ts", "entry.ts"]
+}
