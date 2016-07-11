@@ -4,6 +4,9 @@
   "description": "",
   "repository": "",
   "author": "Yo-An Lin",
+  "scripts": {
+    "build": "webpack"
+  },
   "devDependencies": {
     "async": "^1.2.0",
     "babel-core": "^6.9.0",
@@ -19,18 +22,20 @@
     "babel-runtime": "^6.9.0",
     "file-loader": "^0.8.1",
     "object-assign": "^4.1.0",
+    "ts-loader": "^0.8.2",
     "typedoc": "^0.3.12",
+    "typescript": "^1.8.10",
     "uglify-loader": "^1.3.0",
     "webpack": "^1.13.1",
     "webpack-closure-compiler": "^2.0.2",
     "webpack-dev-server": "^1.14.1",
-    "webpack-stream": "^3.2.0",
-    "ts-loader": "^0.8.2"
+    "webpack-stream": "^3.2.0"
   },
   "dependencies": {
     "eventemitter3": "^1.2.0",
     "object-assign": "^4.1.0",
     "react": "^15.2.1",
+    "react-dom": "^15.2.1",
     "store": "^1.3.20"
   }
 }
