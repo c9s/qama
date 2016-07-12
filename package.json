@@ -32,10 +32,10 @@
     "webpack": "^1.13.1",
     "webpack-closure-compiler": "^2.0.2",
     "webpack-dev-server": "^1.14.1",
-    "webpack-stream": "^3.2.0"
+    "webpack-stream": "^3.2.0",
+    "chai": "^3.5.0"
   },
   "dependencies": {
-    "chai": "^3.5.0",
     "eventemitter3": "^1.2.0",
     "object-assign": "^4.1.0",
     "react": "^15.2.1",
