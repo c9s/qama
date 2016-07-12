@@ -6,8 +6,8 @@
     "module": "commonjs",
     "sourceMap": true,
     "allowJs": true,
-    "outDir": "build"
+    "outDir": "lib"
   },
   "exclude": ["node_modules"],
-  "files": ["typings/index.d.ts", "entry.ts"]
+  "files": ["typings/index.d.ts", "src/entry.ts"]
 }
