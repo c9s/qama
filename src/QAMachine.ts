@@ -34,7 +34,11 @@ export default class QAMachine {
   }
 
   public next(a:string, current:State) : State {
-    return current && current.answers ? current.answers[a] : null;
+    var idx = current && current.answers ? current.answers[a] : null;
+    if (idx === null) {
+      return null;
+    }
+    return this.get(idx);
   }
 
   public queryFrom(input:Array<string>, current:State) : State {
@@ -42,7 +46,7 @@ export default class QAMachine {
     if (input.length == 0) {
       return current;
     }
-    var next = this.next(input.shift(), current);
+    var next:State = this.next(input.shift(), current);
     return next 
       ? this.queryFrom(input, next)
       : current 

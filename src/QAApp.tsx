@@ -11,6 +11,7 @@ interface QAAppProps {
 
 interface QAAppState {
   qState: any;
+  currentAnswers: Array<string>;
 }
 
 export default class QAApp extends React.Component<QAAppProps, QAAppState> {
@@ -19,11 +20,13 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
 
     protected entries : EntryStore;
 
+    protected initIdx : number;
+
     constructor(props : QAAppProps) {
         super(props);
         var m = this.machine = new QAMachine({});
         this.entries = new EntryStore(this.machine);
-        var initIdx = m.state({
+        this.initIdx = m.state({
             "question": "Q1 你是勞工嗎？",
             "payload": {},
             "answers": {
@@ -39,8 +42,11 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
                 })
             }
         });
-        var initState = this.entries.query([], initIdx);
-        this.state = { qState: this.props.qState || initState };
+        var initState = this.entries.query([], this.initIdx);
+        this.state = {
+            "qState": (this.props.qState || initState),
+            "currentAnswers": []
+        };
     }
 
    public componentDidMount() :void {
@@ -53,19 +59,31 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
 
    public handleChange() {
        var last = this.entries.query([]);
-       this.setState({ "qState": last });
+       this.setState({"qState" : last} as QAAppState);
    }
 
    public handleAnswer(key, e) {
-       console.log(this, key, e);
+       // the key is defined in the current qa state
+        if (typeof this.state.qState.answers[key] === "undefined") {
+            console.log(this.state.qState);
+            throw "key " + key + " is not defined in the current answers";
+        }
+        // this.state.currentAnswers.push(key);
+        this.setState({ "currentAnswers": this.state.currentAnswers.concat([key]) } as QAAppState);
+        // var nextIdx = this.state.qState.answers[key];
+        // console.log(this, key, nextIdx, e);
    }
 
    public render() {
-     return <div className="jumbotron">
-        <QuestionSection title={this.state.qState.question}></QuestionSection>
-        <AnswerSection answers={this.state.qState.answers} 
-            currentEntry={this}
-            onAnswer={this.handleAnswer}> </AnswerSection>
-     </div>;
+        var qstate = this.entries.query(this.state.currentAnswers, this.initIdx);
+        console.log("qstate",qstate);
+
+        // Use the current answer list to query the last state
+        return <div className="jumbotron">
+            <QuestionSection title={qstate.question}></QuestionSection>
+            <AnswerSection answers={qstate.answers} 
+                app={this}
+                onAnswer={this.handleAnswer}> </AnswerSection>
+        </div>;
    }
 }

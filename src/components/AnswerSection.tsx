@@ -1,7 +1,7 @@
 import * as React from "react";
 
 interface AnswerProps {
-    currentEntry: any;
+    app: any;
     answers: any;
     onAnswer: any;
 }
@@ -22,7 +22,7 @@ export default class AnswerSection extends React.Component<AnswerProps, AnswerSt
         for (let key in this.state.answers) {
             var next = this.state.answers[key];
             widgets.push(<button 
-                         className="btn btn-primary" onClick={this.props.onAnswer.bind(this.props.currentEntry,key)} 
+                         className="btn btn-primary" onClick={this.props.onAnswer.bind(this.props.app,key)} 
                          key={key}>{key}</button>);
         }
         return <div>{widgets}</div>;
