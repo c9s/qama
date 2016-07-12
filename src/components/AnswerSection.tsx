@@ -31,7 +31,9 @@ export default class AnswerSection extends React.Component<AnswerProps, AnswerSt
 
     public handleChange() {
         var cur = this.entry.current();
-        this.setState({ "answers": cur.answers } as AnswerState);
+        if (cur) {
+            this.setState({ "answers": cur.answers } as AnswerState);
+        }
     }
 
     public handleAnswer(key, e) {

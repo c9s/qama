@@ -45,10 +45,10 @@ export default class QAMachine {
       return current;
     }
     var next:State = this.next(input.shift(), current);
-    return next 
-      ? this.queryFrom(input, next)
-      : current 
-      ;
+    if (next === null) {
+      return null;
+    }
+    return this.queryFrom(input, next);
   }
 
   public query(input:Array<string>, idx:number = 0) : State {

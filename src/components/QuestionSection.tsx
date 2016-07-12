@@ -29,7 +29,9 @@ export default class QuestionSection extends React.Component<QuestionProps, Ques
 
     public handleChange() {
         var cur = this.entry.current();
-        this.setState({ "title": cur.question } as QuestionState);
+        if (cur) {
+            this.setState({ "title": cur.question } as QuestionState);
+        }
     }
 
     public render() {
