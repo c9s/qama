@@ -6,6 +6,7 @@
   "author": "Yo-An Lin",
   "scripts": {
     "build": "webpack",
+    "server": "webpack-dev-server",
     "pretest": "tsc typings/index.d.ts test/*Test.ts --module commonjs",
     "test": "mocha"
   },
