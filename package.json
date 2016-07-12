@@ -23,7 +23,9 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "babel-runtime": "^6.9.0",
+    "chai": "^3.5.0",
     "file-loader": "^0.8.1",
+    "flux": "^2.1.1",
     "object-assign": "^4.1.0",
     "ts-loader": "^0.8.2",
     "typedoc": "^0.3.12",
@@ -32,8 +34,7 @@
     "webpack": "^1.13.1",
     "webpack-closure-compiler": "^2.0.2",
     "webpack-dev-server": "^1.14.1",
-    "webpack-stream": "^3.2.0",
-    "chai": "^3.5.0"
+    "webpack-stream": "^3.2.0"
   },
   "dependencies": {
     "eventemitter3": "^1.2.0",

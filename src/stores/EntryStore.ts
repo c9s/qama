@@ -1,4 +1,5 @@
 import EventEmitter = require('eventemitter3');
+import AppDispatcher from '../dispatcher/AppDispatcher';
 
 const CHANGE_EVENT = 'change';
 
@@ -13,6 +14,14 @@ export default class EntryStore extends EventEmitter {
   constructor(m : QAMachine) {
     super();
     this.machine = m;
+
+    /*
+    AppDispatcher.register(function(a) : void {
+      switch(a.actionType) {
+
+      }
+    });
+    */
   }
 
   public push(a) {

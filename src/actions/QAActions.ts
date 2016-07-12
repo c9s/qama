@@ -1,5 +1,5 @@
 
-import AppDispatcher = require('../dispatcher/AppDispatcher');
+import AppDispatcher from '../dispatcher/AppDispatcher';
 import QAActionID from "./QAActionID";
 
 class QAActionsStatic {

@@ -4,7 +4,7 @@ import QuestionSection from "./components/QuestionSection";
 import QAMachine from "./QAMachine";
 import EntryStore from "./stores/EntryStore";
 
-import AppDispatcher = require('../dispatcher/AppDispatcher');
+import AppDispatcher from './dispatcher/AppDispatcher';
 import QAActions from "./actions/QAActions";
 
 interface QAAppProps {
@@ -62,8 +62,8 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
     }
 
     public handleChange() {
-       var last = this.entries.query([]);
-       this.setState({"qState" : last} as QAAppState);
+       // var last = this.entries.query([]);
+       // this.setState({"qState" : last} as QAAppState);
     }
 
     public handleAnswer(key, e) {
