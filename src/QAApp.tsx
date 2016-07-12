@@ -49,21 +49,21 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
         };
     }
 
-   public componentDidMount() :void {
+    public componentDidMount() :void {
         this.entries.addChangeListener(this.handleChange);
-   }
+    }
 
-   public componentWillUnmount() :void {
+    public componentWillUnmount() :void {
         this.entries.removeChangeListener(this.handleChange);
-   }
+    }
 
-   public handleChange() {
+    public handleChange() {
        var last = this.entries.query([]);
        this.setState({"qState" : last} as QAAppState);
-   }
+    }
 
-   public handleAnswer(key, e) {
-       // the key is defined in the current qa state
+    public handleAnswer(key, e) {
+        // the key is defined in the current qa state
         if (typeof this.state.qState.answers[key] === "undefined") {
             console.log(this.state.qState);
             throw "key " + key + " is not defined in the current answers";
@@ -72,9 +72,9 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
         this.setState({ "currentAnswers": this.state.currentAnswers.concat([key]) } as QAAppState);
         // var nextIdx = this.state.qState.answers[key];
         // console.log(this, key, nextIdx, e);
-   }
+    }
 
-   public render() {
+    public render() {
         var qstate = this.entries.query(this.state.currentAnswers, this.initIdx);
         console.log("qstate",qstate);
 
@@ -85,5 +85,5 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
                 app={this}
                 onAnswer={this.handleAnswer}> </AnswerSection>
         </div>;
-   }
+    }
 }
