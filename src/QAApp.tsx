@@ -1,25 +1,25 @@
 import * as React from "react";
-import AnswerSection from "./AnswerSection";
-import QuestionSection from "./QuestionSection";
-import QAMachine from "../qamachine";
-import EntryStore from "../stores/EntryStore";
+import AnswerSection from "./components/AnswerSection";
+import QuestionSection from "./components/QuestionSection";
+import QAMachine from "./QAMachine";
+import EntryStore from "./stores/EntryStore";
 
-interface CurrentEntryProps {
+interface QAAppProps {
   // Question state
   qState: any;
 }
 
-interface CurrentEntryState {
+interface QAAppState {
   qState: any;
 }
 
-export default class CurrentEntry extends React.Component<CurrentEntryProps, CurrentEntryState> {
+export default class QAApp extends React.Component<QAAppProps, QAAppState> {
 
     protected machine : any;
 
     protected entries : EntryStore;
 
-    constructor(props : CurrentEntryProps) {
+    constructor(props : QAAppProps) {
         super(props);
         var m = this.machine = new QAMachine({});
         this.entries = new EntryStore(this.machine);

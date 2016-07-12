@@ -1,8 +1,4 @@
-interface State {
-  question?: string;
-  payload?: any;
-  answers?: Object;
-}
+import "./State";
 
 export default class QAMachine {
 
