@@ -1,6 +1,7 @@
 import * as React from "react";
 
 export interface QuestionProps {
+    entry: any;
     title: string;
 }
 
@@ -9,12 +10,29 @@ export interface QuestionState {
 }
 
 export default class QuestionSection extends React.Component<QuestionProps, QuestionState> {
+
+    protected entry:any;
+
     constructor(props : QuestionProps) {
         super(props);
-        this.state = { title: this.props.title };
+        this.entry = this.props.entry;
+        this.state = { 'title': this.props.title };
     }
 
-    render() {
+    public componentDidMount() :void {
+        this.entry.addChangeListener(this.handleChange.bind(this));
+    }
+
+    public componentWillUnmount() :void {
+        this.entry.removeChangeListener(this.handleChange.bind(this));
+    }
+
+    public handleChange() {
+        var cur = this.entry.current();
+        this.setState({ "title": cur.question } as QuestionState);
+    }
+
+    public render() {
         return <h2 className="display-3">{this.state.title}</h2>;
     }
 }

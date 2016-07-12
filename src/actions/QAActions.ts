@@ -1,4 +1,3 @@
-
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import QAActionID from "./QAActionID";
 
@@ -10,6 +9,12 @@ class QAActionsStatic {
     AppDispatcher.dispatch({
       "actionType": QAActionID.QA_ANSWER,
       "key": key
+    });
+  }
+
+  public back(): void {
+    AppDispatcher.dispatch({
+      "actionType": QAActionID.QA_BACK
     });
   }
 }

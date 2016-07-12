@@ -1,4 +1,4 @@
 ///<reference path='../../typings/globals/flux/index.d.ts'/>
-import flux from 'flux';
-var Dispatcher: flux.Dispatcher<any> = new flux.Dispatcher();
-export default Dispatcher;
+import {Dispatcher} from 'flux';
+var dispatcher = new Dispatcher;
+export default dispatcher;

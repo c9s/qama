@@ -52,6 +52,6 @@ export default class QAMachine {
   }
 
   public query(input:Array<string>, idx:number = 0) : State {
-    return this.queryFrom(input, this.states[idx]);
+    return this.queryFrom(input.concat([]), this.states[idx]);
   }
 }
