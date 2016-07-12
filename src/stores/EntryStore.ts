@@ -8,13 +8,33 @@ export default class EntryStore extends EventEmitter {
 
   protected machine: QAMachine;
 
+  protected answers: Array<string>;
+
   constructor(m : QAMachine) {
     super();
     this.machine = m;
   }
 
-  public query(input, start:number = 0) {
-    return this.machine.query(input, start);
+  public push(a) {
+    this.answers.push(a);
+    this.emitChange();
+  }
+
+  public pop() {
+    this.answers.pop();
+    this.emitChange();
+  }
+
+  public reset() {
+    this.answers = [];
+    this.emitChange();
+  }
+
+  /**
+   * You must tell it where to start the state machine.
+   */
+  public query(input, init:number) {
+    return this.machine.query(input, init);
   }
 
   public next(answer, current) {

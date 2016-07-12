@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "eventemitter3": "^1.2.0",
+    "flux": "^2.1.1",
     "object-assign": "^4.1.0",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",

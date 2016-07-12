@@ -21,7 +21,6 @@ export default class QAMachine {
     // skip the existing indexes
     this.idx = this.nextIndex(this.idx);
     this.states[this.idx] = state;
-    console.log("state", this.idx, state);
     return this.idx++;
   }
 
@@ -42,7 +41,6 @@ export default class QAMachine {
   }
 
   public queryFrom(input:Array<string>, current:State) : State {
-    console.log("queryFrom", input, current);
     if (input.length == 0) {
       return current;
     }
@@ -54,7 +52,6 @@ export default class QAMachine {
   }
 
   public query(input:Array<string>, idx:number = 0) : State {
-    console.log("query", idx);
     return this.queryFrom(input, this.states[idx]);
   }
 }

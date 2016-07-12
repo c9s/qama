@@ -4,6 +4,9 @@ import QuestionSection from "./components/QuestionSection";
 import QAMachine from "./QAMachine";
 import EntryStore from "./stores/EntryStore";
 
+import AppDispatcher = require('../dispatcher/AppDispatcher');
+import QAActions from "./actions/QAActions";
+
 interface QAAppProps {
   // Question state
   qState: any;
@@ -38,6 +41,7 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
                     }
                 }),
                 "不是": m.state({
+                    "question": "請回家 XD",
                     "payload": { "message": "請回家 XD" },
                 })
             }
@@ -65,18 +69,17 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
     public handleAnswer(key, e) {
         // the key is defined in the current qa state
         if (typeof this.state.qState.answers[key] === "undefined") {
-            console.log(this.state.qState);
             throw "key " + key + " is not defined in the current answers";
         }
+        QAActions.answer(key);
         // this.state.currentAnswers.push(key);
-        this.setState({ "currentAnswers": this.state.currentAnswers.concat([key]) } as QAAppState);
+        // this.setState({ "currentAnswers": this.state.currentAnswers.concat([key]) } as QAAppState);
         // var nextIdx = this.state.qState.answers[key];
-        // console.log(this, key, nextIdx, e);
     }
 
     public render() {
         var qstate = this.entries.query(this.state.currentAnswers, this.initIdx);
-        console.log("qstate",qstate);
+        console.log("qstate", qstate);
 
         // Use the current answer list to query the last state
         return <div className="jumbotron">
