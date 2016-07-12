@@ -21,9 +21,26 @@ export default class CurrentEntry extends React.Component<CurrentEntryProps, Cur
 
     constructor(props : CurrentEntryProps) {
         super(props);
-        this.state = { qState: this.props.qState };
-        this.machine = new QAMachine({});
+        var m = this.machine = new QAMachine({});
         this.entries = new EntryStore(this.machine);
+        var initIdx = m.state({
+            "question": "Q1 你是勞工嗎？",
+            "payload": {},
+            "answers": {
+                "是": m.state({
+                    "question": "Q2 你是領...",
+                    "answers": {
+                        "月薪": null,
+                        "時薪": null,
+                    }
+                }),
+                "不是": m.state({
+                    "payload": { "message": "請回家 XD" },
+                })
+            }
+        });
+        var initState = this.entries.query([], initIdx);
+        this.state = { qState: this.props.qState || initState };
     }
 
    public componentDidMount() :void {
@@ -35,7 +52,7 @@ export default class CurrentEntry extends React.Component<CurrentEntryProps, Cur
    }
 
    public handleChange() {
-       var last = this.entries.query([], "Q1");
+       var last = this.entries.query([]);
        this.setState({ "qState": last });
    }
 

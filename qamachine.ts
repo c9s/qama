@@ -1,44 +1,60 @@
-
-interface State { }
+interface State {
+  question?: string;
+  payload?: any;
+  answers?: Object;
+}
 
 export default class QAMachine {
 
   protected states:any;
 
+  protected idx:number = 0;
+
   constructor(states:any) {
     this.states = states || {};
   }
 
-  state(code:string, state) : string {
-    this.states[code] = state;
-    return code;
+  private nextIndex(idx:number) : number {
+    if (this.states[idx]) {
+      return this.nextIndex(idx + 1);
+    }
+    return idx;
   }
 
-  get(code:string) : State {
-    return this.states[code];
+  public state(state:State) : number {
+    // skip the existing indexes
+    this.idx = this.nextIndex(this.idx);
+    this.states[this.idx] = state;
+    console.log("state", this.idx, state);
+    return this.idx++;
   }
 
-  nextOf(code:string, a:string) : State {
-    var current = this.get(code);
-    return this.next(a, current);
+  public get(idx:number) : State {
+    return this.states[idx];
   }
 
-  next(a:string, current) : State {
+  public nextOf(idx:number, a:string) : State {
+    return this.next(a, this.states[idx]);
+  }
+
+  public next(a:string, current:State) : State {
     return current && current.answers ? current.answers[a] : null;
   }
 
-  queryFrom(input:Array<string>, current:State) : State {
+  public queryFrom(input:Array<string>, current:State) : State {
+    console.log("queryFrom", input, current);
     if (input.length == 0) {
       return current;
     }
     var next = this.next(input.shift(), current);
-    return ! next 
-      ? current 
-      : this.queryFrom(input, next);
+    return next 
+      ? this.queryFrom(input, next)
+      : current 
+      ;
   }
 
-  query(input:Array<string>, start:string) : State {
-    var state = this.states[start];
-    return this.queryFrom(input, state);
+  public query(input:Array<string>, idx:number = 0) : State {
+    console.log("query", idx);
+    return this.queryFrom(input, this.states[idx]);
   }
 }

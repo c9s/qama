@@ -1,7 +1,7 @@
 {
-  "name": "ts-webpack",
-  "version": "0.0.0",
-  "description": "",
+  "name": "qama",
+  "version": "0.1.0",
+  "description": "qamachine",
   "repository": "",
   "author": "Yo-An Lin",
   "scripts": {

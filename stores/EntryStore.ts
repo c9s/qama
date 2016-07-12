@@ -11,25 +11,9 @@ export default class EntryStore extends EventEmitter {
   constructor(m : QAMachine) {
     super();
     this.machine = m;
-    m.state("Q1", {
-        "question": "Q1 你是勞工嗎？",
-        "payload": {},
-        "answers": {
-            "是": m.state("Q2", {
-                "question": "Q2 你是領...",
-                "answers": {
-                    "月薪": null,
-                    "時薪": null,
-                }
-            }),
-            "不是": m.state("Q3", {
-                "payload": { "message": "請回家 XD" },
-            })
-        }
-    });
   }
 
-  public query(input, start) {
+  public query(input, start:number = 0) {
     return this.machine.query(input, start);
   }
 
