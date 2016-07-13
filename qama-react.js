@@ -20517,6 +20517,9 @@
 	                        "月薪": m.state({
 	                            "question": "你週六有加班嗎? 加班幾小時?",
 	                            "answers": {
+	                                "沒有加班": m.state({
+	                                    "message": "此次勞基法修法對你沒有影響。"
+	                                }),
 	                                "2小時": m.state({
 	                                    "message": "兩小時內加班，現行是 ⅓ 倍時薪，而一例一休是 1⅓ 倍時薪。"
 	                                }),
@@ -22546,11 +22549,12 @@
 	        var widgets = [];
 	        for (var key in this.props.answers) {
 	            var next = this.props.answers[key];
+	            widgets.push(" ");
 	            widgets.push(React.createElement("button", {className: "btn btn-primary", onClick: this.handleAnswer.bind(this, key), key: key}, key));
 	        }
 	        var currentAnswers = this.entry.getAnswers();
 	        return React.createElement("div", null, currentAnswers.length == 0 ? null :
-	            React.createElement("button", {className: "btn btn-default", onClick: this.handleBack.bind(this)}, "回上一題"), widgets);
+	            React.createElement("button", {className: "btn btn-default", onClick: this.handleBack.bind(this)}, "回上一題"), " ", widgets);
 	    };
 	    return AnswerSection;
 	}(React.Component));
