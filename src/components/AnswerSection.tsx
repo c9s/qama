@@ -31,6 +31,7 @@ export default class AnswerSection extends React.Component<AnswerProps, AnswerSt
         var widgets = [];
         for (let key in this.props.answers) {
             var next = this.props.answers[key];
+            widgets.push(" ")
             widgets.push(<button
                          className="btn btn-primary" onClick={this.handleAnswer.bind(this,key)}
                          key={key}>{key}</button>);
@@ -39,6 +40,7 @@ export default class AnswerSection extends React.Component<AnswerProps, AnswerSt
         return <div>
             {currentAnswers.length == 0 ? null :
                 <button className="btn btn-default" onClick={this.handleBack.bind(this)}>回上一題</button>}
+            { " " }
             {widgets}
         </div>;
     }
