@@ -19,11 +19,13 @@ module.exports = {
         'exclude': [/node_modules/,nodeModulesPath]
       },
       // babel-loader for pure javascript (es6)
+      /*
       {
         'test': /\.(jsx?)$/,
         'loaders': ['babel'],
         'exclude': [/node_modules/,nodeModulesPath]
       }
+      */
     ]
   },
   'externals': {
