@@ -105,9 +105,9 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
         var { answers } = this.entry;
         if (answers.length) {
             var query = queryString.stringify({ "answers": answers.join(",") });
-            this.history.push({ "search": "?" + query });
+            this.history.push({ "pathname": document.location.pathname, "search": "?" + query });
         } else {
-            this.history.push({ "search": "" });
+            this.history.push({ "pathname": document.location.pathname, "search": "" });
         }
         this.setState({"qState" : current} as QAAppState);
     }
