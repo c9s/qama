@@ -44,6 +44,9 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
                         "月薪": m.state({
                             "question": "你週六有加班嗎? 加班幾小時?",
                             "answers": {
+                                "沒有加班": m.state({
+                                    "message": "此次勞基法修法對你沒有影響。"
+                                }),
                                 "2小時": m.state({
                                     "message": "兩小時內加班，現行是 ⅓ 倍時薪，而一例一休是 1⅓ 倍時薪。"
                                 }),
