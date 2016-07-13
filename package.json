@@ -26,6 +26,7 @@
     "chai": "^3.5.0",
     "file-loader": "^0.8.1",
     "flux": "^2.1.1",
+    "jquery": "^3.1.0",
     "object-assign": "^4.1.0",
     "ts-loader": "^0.8.2",
     "typedoc": "^0.3.12",
