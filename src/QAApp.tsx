@@ -39,9 +39,25 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
             "payload": {},
             "answers": {
                 "是": m.state({
-                    "question": "Q2 你是領...",
+                    "question": "Q2 你是領月薪還是時薪呢?",
                     "answers": {
-                        "月薪": null,
+                        "月薪": m.state({
+                            "question": "你週六有加班嗎? 加班幾小時?",
+                            "answers": {
+                                "2小時": m.state({
+                                    "message": "兩小時內工時採 1 又 1/3 倍時薪計算。"
+                                }),
+                                "4小時以內": m.state({
+                                    "message": "兩小時時薪為 1 又 1/3 倍時薪，兩小時後工時採 1 又 2/3 倍時薪計算。 工作時間計算方式為工作4小時以內，以4小時計算"
+                                }),
+                                "8小時以內": m.state({
+                                    "message": "兩小時時薪為 1 又 1/3 倍時薪，兩小時後工時採 1 又 2/3 倍時薪計算。 超過4小時至8小時，以8小時計算。"
+                                }),
+                                "超過八小時": m.state({
+                                    "message": "兩小時時薪為 1 又 1/3 倍時薪，兩小時後工時採 1 又 2/3 倍時薪計算。 超過8小時至12小時以內者，以12小時計。"
+                                })
+                            }
+                        }),
                         "時薪": null,
                     }
                 }),
@@ -98,6 +114,13 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
         if (!qstate) {
             return <div className="jumbotron"> </div>;
         }
+
+        if (qstate.message) {
+            return <div className="jumbotron">
+                        {qstate.message}
+                    </div>;
+        }
+
         // Use the current answer list to query the last state
         return <div className="jumbotron">
             <QuestionSection title={qstate.question}></QuestionSection>
