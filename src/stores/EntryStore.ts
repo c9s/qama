@@ -46,6 +46,11 @@ export default class EntryStore extends EventEmitter {
     return this.answers;
   }
 
+  // set answers without echoing
+  public setAnswers(answers:Array<string>) : void {
+    this.answers = answers;
+  }
+
   public reset() {
     this.answers = [];
     this.emitChange();

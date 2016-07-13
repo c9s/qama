@@ -9,8 +9,11 @@
     "jquery": "registry:dt/jquery#1.10.0+20160417213236",
     "mocha": "registry:dt/mocha#2.2.5+20160619032855",
     "object-assign": "registry:dt/object-assign#4.0.1+20160316155526",
+    "query-string": "registry:dt/query-string#3.0.0+20160331065456",
     "react": "registry:dt/react#0.14.0+20160630100702",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040"
   },
-  "dependencies": {}
+  "dependencies": {
+    "history": "registry:npm/history#2.0.0+20160607172317"
+  }
 }
