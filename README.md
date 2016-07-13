@@ -36,6 +36,7 @@ INSTALL
     npm install -g webpack
     npm install -g webpack-dev-server
     npm install
+    npm link typescript
     typings install
     webpack-dev-server
 
