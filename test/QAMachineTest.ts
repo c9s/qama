@@ -41,31 +41,31 @@ describe('QAMachine', () => {
   });
 
   it("normalize JSON", () => {
-		const json = {
-			"question": "Q1",
-			"payload": { "foo": "bar" },
-			"answers": {
-				"A1": {
-					"question": "Q2",
-					"answers": {
-						"A3": null,
-						"A4": {
-							"question": "Q3",
-							"answers": {
-								"A5": null,
-								"A6": null
-							}
-						}
-					}
-				},
-				"A2": {
-					"question": "Q4",
-					"answers": {
-						"A7": null
-					}
-				}
-			}
-		};
+    const json = {
+      "question": "Q1",
+      "payload": { "foo": "bar" },
+      "answers": {
+        "A1": {
+          "question": "Q2",
+          "answers": {
+            "A3": null,
+            "A4": {
+              "question": "Q3",
+              "answers": {
+                "A5": null,
+                "A6": null
+              }
+            }
+          }
+        },
+        "A2": {
+          "question": "Q4",
+          "answers": {
+            "A7": null
+          }
+        }
+      }
+    };
 
     const m = QAMachine.fromJSON(json);
     assert.equal(m.get(0).question, "Q1");
@@ -77,7 +77,7 @@ describe('QAMachine', () => {
       for (let k in s.answers) {
         let a = s.answers[k];
         assert.isOk(typeof a === "number" || a === null);
-			}
-		}
+      }
+    }
   });
 });
