@@ -3,6 +3,7 @@ import * as React from "react";
 import QAActions from "../actions/QAActions";
 import AnswerSection from "./AnswerSection";
 import QuestionSection from "./QuestionSection";
+import ResultSection from "./ResultSection";
 
 interface TrackProps {
     store: any;
@@ -45,7 +46,7 @@ export default class Track extends React.Component<TrackProps, QAState> {
 
         // TODO: extract to Result component
         if (qstate.result) {
-            return <div className="jumbotron">{qstate.result}</div>;
+            return <ResultSection result={qstate.result}></ResultSection>;
         }
 
         // render result

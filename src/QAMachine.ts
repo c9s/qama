@@ -64,7 +64,7 @@ export default class QAMachine {
     return this.get(idx);
   }
 
-  public queryFrom(input:Array<string>, current:QAState) : QAState {
+  public queryFrom(input:Array<string> = [], current:QAState) : QAState {
     if (input.length == 0) {
       return current;
     }
@@ -75,7 +75,7 @@ export default class QAMachine {
     return this.queryFrom(input, next);
   }
 
-  public query(input:Array<string>, idx:number = 0) : QAState {
+  public query(input:Array<string> = [], idx:number = 0) : QAState {
     return this.queryFrom(input.concat([]), this.states[idx]);
   }
 }
