@@ -1,0 +1,15 @@
+body {
+  background: #620c15; }
+
+.jumbotron {
+  background: #8F121F;
+  color: #f0f0f0; }
+  .jumbotron .btn-default {
+    background: #000;
+    color: #fff; }
+  .jumbotron .btn-primary {
+    color: #000;
+    background: #FADA00;
+    border-color: #615500; }
+
+/*# sourceMappingURL=g0v-bootstrap.css.map */

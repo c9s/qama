@@ -10,6 +10,8 @@ export default class ResultSection extends React.Component<ResultProps, ResultSt
     }
 
     public render() {
-        return <div className="jumbotron">{this.props.result}</div>;
+        return <div className="jumbotron">
+            <h2 className="display-3">{this.props.result}</h2>
+        </div>;
     }
 }

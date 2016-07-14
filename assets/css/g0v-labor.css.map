@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAMA,IAAI;EACF,UAAU,EAAE,OAAiB;;AAC/B,UAAU;EACR,UAAU,EARN,OAAO;EASX,KAAK,EANC,OAAO;EAOb,uBAAY;IACV,UAAU,EAAE,IAAI;IAChB,KAAK,EAAE,IAAI;EACb,uBAAY;IACV,KAAK,EAAE,IAAI;IACX,UAAU,EAdP,OAAO;IAeV,YAAY,EAAE,OAAkB",
+"sources": ["../sass/g0v-bootstrap.sass"],
+"names": [],
+"file": "g0v-bootstrap.css"
+}
