@@ -6,6 +6,30 @@ export default class QAMachine {
 
   protected idx:number = 0;
 
+  // a naive normalizer
+  private static normalize(m:QAMachine, obj:any) : number {
+    if (!obj) return obj;
+    let ret : State = {};
+    let idx = m.state(ret);
+    if (obj.question) ret.question = obj.question
+    if (obj.payload) ret.payload = obj.payload
+    if (obj.message) ret.message = obj.message
+    if (obj.answers) {
+      ret.answers = {};
+      let keys = Object.keys(obj.answers);
+      keys.forEach(k => {
+        ret.answers[k] = QAMachine.normalize(m, obj.answers[k]);
+      });
+    }
+    return idx;
+  }
+
+  public static fromJSON(obj:any) : QAMachine {
+    let m = new QAMachine({});
+    QAMachine.normalize(m, obj);
+    return m;
+  }
+
   constructor(states:any) {
     this.states = states || {};
   }
