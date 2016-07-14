@@ -3,7 +3,8 @@ import * as React from "react";
 import QAActions from "../actions/QAActions";
 
 interface AnswerProps {
-    entry: any;
+    store: any;
+    track: number;
     answers: any;
 }
 
@@ -12,19 +13,20 @@ interface AnswerState {
 
 export default class AnswerSection extends React.Component<AnswerProps, AnswerState> {
 
-    protected entry:any;
+    protected store:any;
 
     constructor(props : AnswerProps) {
         super(props);
-        this.entry = this.props.entry;
+        this.store = this.props.store;
     }
 
     public handleAnswer(key, e) {
-        QAActions.answer(key);
+        console.log("handleAnswer", this.props.track, key);
+        QAActions.answer(this.props.track, key);
     }
 
     public handleBack(e) {
-        QAActions.back();
+        QAActions.back(this.props.track);
     }
 
     public render() {
@@ -36,7 +38,7 @@ export default class AnswerSection extends React.Component<AnswerProps, AnswerSt
                          className="btn btn-primary" onClick={this.handleAnswer.bind(this,key)}
                          key={key}>{key}</button>);
         }
-        var currentAnswers = this.entry.getAnswers();
+        var currentAnswers = this.store.getAnswers(this.props.track);
         return <div>
             {currentAnswers.length == 0 ? null :
                 <button className="btn btn-default" onClick={this.handleBack.bind(this)}>回上一題</button>}

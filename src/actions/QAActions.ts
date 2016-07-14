@@ -5,16 +5,18 @@ class QAActionsStatic {
   /**
    * @param  {string} text
    */
-  public answer(key:string): void {
+  public answer(trackId:number, key:string): void {
     AppDispatcher.dispatch({
       "actionType": QAActionID.QA_ANSWER,
-      "key": key
+      "key": key,
+      "track": trackId
     });
   }
 
-  public back(): void {
+  public back(trackId:number): void {
     AppDispatcher.dispatch({
-      "actionType": QAActionID.QA_BACK
+      "actionType": QAActionID.QA_BACK,
+      "track": trackId
     });
   }
 }

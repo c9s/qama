@@ -2,21 +2,14 @@ import * as React from "react";
 // install with `typings install --save npm~history`
 import { History, Location, createHistory } from "history";
 import * as queryString from "query-string";
-import AnswerSection from "./components/AnswerSection";
-import QuestionSection from "./components/QuestionSection";
+import Track from "./components/Track";
 import QAMachine from "./QAMachine";
 import EntryStore from "./stores/EntryStore";
 
 import AppDispatcher from './dispatcher/AppDispatcher';
 
-interface QAAppProps {
-  // Question state
-  qState: any;
-}
-
-interface QAAppState {
-  qState: any;
-}
+interface QAAppProps { }
+interface QAAppState { }
 
 export default class QAApp extends React.Component<QAAppProps, QAAppState> {
 
@@ -26,15 +19,17 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
 
     protected machine : any;
 
-    protected entry : EntryStore;
+    protected store : EntryStore;
 
-    protected initIdx : number;
+    protected tracks: Array<number>;
 
     constructor(props : QAAppProps) {
         super(props);
+        this.tracks = [];
         this.history = createHistory();
         var m = this.machine = new QAMachine({});
-        this.initIdx = m.state({
+
+        this.tracks.push(m.state({
             "question": "Q1 你是勞工嗎？",
             "payload": {},
             "answers": {
@@ -69,18 +64,21 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
                     "payload": { "message": "請回家 XD" },
                 })
             }
-        });
-        this.entry = new EntryStore(this.machine, this.initIdx);
-        this.state = { "qState": this.entry.current() };
+        }));
+        console.log("tracks",this.tracks);
+        this.store = new EntryStore(this.machine);
     }
 
     private handleHistory(location : Location) {
         switch(location.action) {
             case "POP": {
+            /*
+             * FIXME: load track ID
               let query = queryString.parse(location.search);
               let answers = query.answers ? query.answers.split(",") : [];
-              this.entry.setAnswers(answers);
-              this.setState({ "qState" : this.entry.current() } as QAAppState);
+              this.store.setAnswers(answers);
+              this.setState({ "qState" : this.store.current() } as QAAppState);
+              */
               break;
             }
             default:
@@ -88,21 +86,23 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
     }
 
     public componentDidMount() :void {
-        this.entry.addChangeListener(this.handleChange.bind(this));
+        // this.store.addChangeListener(this.handleChange.bind(this));
         this.unlistenHistory = this.history.listen(this.handleHistory.bind(this));
         // location is global
         this.handleHistory({ "action": "POP", "search": location.search });
     }
 
     public componentWillUnmount() :void {
-        this.entry.removeChangeListener(this.handleChange.bind(this));
+        // this.store.removeChangeListener(this.handleChange.bind(this));
         this.unlistenHistory();
         this.unlistenHistory = null;
     }
 
+    /*
+    FIXME: set track Id
     public handleChange() {
-        var current = this.entry.current();
-        var { answers } = this.entry;
+        var current = this.store.current();
+        var { answers } = this.store;
         if (answers.length) {
             var query = queryString.stringify({ "answers": answers.join(",") });
             this.history.push({ "pathname": document.location.pathname, "search": "?" + query });
@@ -111,25 +111,16 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
         }
         this.setState({"qState" : current} as QAAppState);
     }
+    */
 
     public render() {
-        var qstate = this.state.qState;
-        if (!qstate) {
-            return <div className="jumbotron"> </div>;
-        }
-
-        if (qstate.message) {
-            return <div className="jumbotron">
-                        {qstate.message}
-                    </div>;
-        }
-
-        // Use the current answer list to query the last state
-        return <div className="jumbotron">
-            <QuestionSection title={qstate.question}></QuestionSection>
-            <AnswerSection answers={qstate.answers}
-                entry={this.entry}>
-            </AnswerSection>
-        </div>;
+        var trackComponents = [];
+        this.tracks.forEach((tid,i) => {
+            trackComponents.push(
+                <Track key={i} track={tid} store={this.store}>
+                </Track>
+            );
+        });
+        return <div>{trackComponents}</div>;
     }
 }
