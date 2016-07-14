@@ -1,16 +1,21 @@
 body {
+  color: #f0f0f0;
   background: #353535; }
 
 .jumbotron {
+  background: #4E4E4E;
+  color: #f0f0f0; }
+
+.jumbotron-track {
   border-left: 20px solid #c1192b;
   border-radius: 0 3rem;
   background: #4E4E4E;
   color: #f0f0f0;
   box-shadow: -3px 3px 10px rgba(0, 0, 0, 0.5); }
-  .jumbotron .btn-default {
+  .jumbotron-track .btn-default {
     background: #000;
     color: #fff; }
-  .jumbotron .btn-primary {
+  .jumbotron-track .btn-primary {
     color: #000;
     background: #FFCE00;
     border-color: #665200; }

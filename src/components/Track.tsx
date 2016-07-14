@@ -50,8 +50,8 @@ export default class Track extends React.Component<TrackProps, QAState> {
         }
 
         // render result
-        return <div className="jumbotron">
-                <QuestionSection title={qstate.title}></QuestionSection>
+        return <div className="jumbotron jumbotron-track">
+                <QuestionSection title={qstate.title} subtitle={qstate.subtitle}></QuestionSection>
                 <AnswerSection 
                         answers={qstate.answers} 
                         store={this.store} 

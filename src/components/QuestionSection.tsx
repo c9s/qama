@@ -2,6 +2,7 @@ import * as React from "react";
 
 export interface QuestionProps {
     title: string;
+    subtitle?: string;
 }
 
 export interface QuestionState {
@@ -14,6 +15,10 @@ export default class QuestionSection extends React.Component<QuestionProps, Ques
     }
 
     public render() {
-        return <h2 className="display-3">{this.props.title}</h2>;
+        var comps = [<h2 key={"title"} className="display-3">{this.props.title}</h2>];
+        if (this.props.subtitle) {
+            comps.push(<p className="lead">{this.props.subtitle}</p>);
+        }
+        return <div>{comps}</div>;
     }
 }

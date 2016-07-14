@@ -114,6 +114,8 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
                 </Track>
             );
         });
-        return <div className="container">{trackComponents}</div>;
+        return <div className="container">
+            {trackComponents}
+        </div>;
     }
 }
