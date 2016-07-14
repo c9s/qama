@@ -13,7 +13,7 @@ export default class QAMachine {
     let idx = m.state(ret);
     if (obj.question) ret.question = obj.question
     if (obj.payload) ret.payload = obj.payload
-    if (obj.message) ret.message = obj.message
+    if (obj.result) ret.result = obj.result
     if (obj.answers) {
       ret.answers = {};
       let keys = Object.keys(obj.answers);

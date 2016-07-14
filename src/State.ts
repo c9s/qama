@@ -1,6 +1,6 @@
 interface State {
   question?: string;
   payload?: any;
-  message?: string;
+  result?: string;
   answers?: Object;
 }
