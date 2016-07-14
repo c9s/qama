@@ -20496,41 +20496,46 @@
 	var React = __webpack_require__(2);
 	// install with `typings install --save npm~history`
 	var history_1 = __webpack_require__(169);
-	var queryString = __webpack_require__(190);
-	var AnswerSection_1 = __webpack_require__(192);
-	var QuestionSection_1 = __webpack_require__(199);
-	var QAMachine_1 = __webpack_require__(200);
-	var EntryStore_1 = __webpack_require__(202);
+	var Track_1 = __webpack_require__(192);
+	var QAMachine_1 = __webpack_require__(202);
+	var EntryStore_1 = __webpack_require__(204);
 	var QAApp = (function (_super) {
 	    __extends(QAApp, _super);
 	    function QAApp(props) {
 	        _super.call(this, props);
+	        this.tracks = [];
 	        this.history = history_1.createHistory();
 	        var m = this.machine = new QAMachine_1.default({});
-	        this.initIdx = m.state({
-	            "question": "Q1 你是勞工嗎？",
-	            "payload": {},
+	        this.tracks.push(m.state({
+	            "title": "Q1 國定假日有上班嗎？",
+	            "answers": {
+	                "有": m.state({ "result": "你沒差" }),
+	                "沒有": m.state({ "result": "你少七天假" })
+	            }
+	        }));
+	        this.tracks.push(m.state({
+	            "title": "Q2 你是勞工嗎？",
 	            "answers": {
 	                "是": m.state({
-	                    "question": "Q2 你是領月薪還是時薪呢?",
+	                    "title": "你是領月薪還是時薪呢?",
 	                    "answers": {
 	                        "月薪": m.state({
-	                            "question": "你週六有加班嗎? 加班幾小時?",
+	                            "title": "你週六有加班嗎? 加班幾小時?",
 	                            "answers": {
 	                                "沒有加班": m.state({
-	                                    "message": "此次勞基法修法對你沒有影響。"
+	                                    "result": "此次勞基法修法對你沒有影響。"
 	                                }),
 	                                "2小時": m.state({
-	                                    "message": "兩小時內加班，現行是 ⅓ 倍時薪，而一例一休是 1⅓ 倍時薪。"
+	                                    "result": "兩小時內加班，現行是 ⅓ 倍時薪，而一例一休是 1⅓ 倍時薪。"
 	                                }),
 	                                "4小時以內": m.state({
-	                                    "message": "兩小時時薪為 1⅓ 倍時薪，兩小時後工時採 1⅔ 倍時薪計算。 工作時間計算方式為工作4小時以內，以4小時計算"
+	                                    "result": "兩小時時薪為 1⅓ 倍時薪，兩小時後工時採 1⅔ 倍時薪計算。 工作時間計算方式為工作4小時以內，以4小時計算"
 	                                }),
 	                                "8小時以內": m.state({
-	                                    "message": "兩小時時薪為 1⅓ 倍時薪，兩小時後工時採 1⅔ 倍時薪計算。 超過4小時至8小時，以8小時計算。"
+	                                    "result": "兩小時時薪為 1⅓ 倍時薪，兩小時後工時採 1⅔ 倍時薪計算。 超過4小時至8小時，以8小時計算。"
 	                                }),
 	                                "超過八小時": m.state({
-	                                    "message": "兩小時時薪為 1⅓ 倍時薪，兩小時後工時採 1⅔ 倍時薪計算。 超過8小時至12小時以內者，以12小時計。"
+	                                    "result": "兩小時時薪為 1⅓ 倍時薪，兩小時後工時採 1⅔ 倍時薪計算。 超過8小時至12小時以內者，以12小時計。"
 	                                })
 	                            }
 	                        }),
@@ -20538,59 +20543,46 @@
 	                    }
 	                }),
 	                "不是": m.state({
-	                    "question": "請回家 XD",
-	                    "payload": { "message": "請回家 XD" },
+	                    "title": "請回家 XD",
+	                    "payload": { "result": "請回家 XD" },
 	                })
 	            }
-	        });
-	        this.entry = new EntryStore_1.default(this.machine, this.initIdx);
-	        this.state = { "qState": this.entry.current() };
+	        }));
+	        this.store = new EntryStore_1.default(this.machine);
 	    }
 	    QAApp.prototype.handleHistory = function (location) {
 	        switch (location.action) {
 	            case "POP": {
-	                var query = queryString.parse(location.search);
-	                var answers = query.answers ? query.answers.split(",") : [];
-	                this.entry.setAnswers(answers);
-	                this.setState({ "qState": this.entry.current() });
+	                this.store.loadQueryString(location.search);
 	                break;
 	            }
 	            default:
 	        }
 	    };
 	    QAApp.prototype.componentDidMount = function () {
-	        this.entry.addChangeListener(this.handleChange.bind(this));
+	        this.store.addChangeListener(this.handleChange.bind(this));
 	        this.unlistenHistory = this.history.listen(this.handleHistory.bind(this));
-	        // location is global
 	        this.handleHistory({ "action": "POP", "search": location.search });
 	    };
 	    QAApp.prototype.componentWillUnmount = function () {
-	        this.entry.removeChangeListener(this.handleChange.bind(this));
+	        this.store.removeChangeListener(this.handleChange.bind(this));
 	        this.unlistenHistory();
 	        this.unlistenHistory = null;
 	    };
 	    QAApp.prototype.handleChange = function () {
-	        var current = this.entry.current();
-	        var answers = this.entry.answers;
-	        if (answers.length) {
-	            var query = queryString.stringify({ "answers": answers.join(",") });
-	            this.history.push({ "search": "?" + query });
-	        }
-	        else {
-	            this.history.push({ "search": "" });
-	        }
-	        this.setState({ "qState": current });
+	        var qs = this.store.serialize();
+	        this.history.push({
+	            "pathname": document.location.pathname,
+	            "search": qs ? ("?" + qs) : ""
+	        });
 	    };
 	    QAApp.prototype.render = function () {
-	        var qstate = this.state.qState;
-	        if (!qstate) {
-	            return React.createElement("div", {className: "jumbotron"}, " ");
-	        }
-	        if (qstate.message) {
-	            return React.createElement("div", {className: "jumbotron"}, qstate.message);
-	        }
-	        // Use the current answer list to query the last state
-	        return React.createElement("div", {className: "jumbotron"}, React.createElement(QuestionSection_1.default, {title: qstate.question}), React.createElement(AnswerSection_1.default, {answers: qstate.answers, entry: this.entry}));
+	        var _this = this;
+	        var trackComponents = [];
+	        this.tracks.forEach(function (tid, i) {
+	            trackComponents.push(React.createElement(Track_1.default, {key: i, track: tid, store: _this.store}));
+	        });
+	        return React.createElement("div", {className: "container"}, trackComponents);
 	    };
 	    return QAApp;
 	}(React.Component));
@@ -22533,33 +22525,45 @@
 	};
 	var React = __webpack_require__(2);
 	var QAActions_1 = __webpack_require__(193);
-	var AnswerSection = (function (_super) {
-	    __extends(AnswerSection, _super);
-	    function AnswerSection(props) {
+	var AnswerSection_1 = __webpack_require__(199);
+	var QuestionSection_1 = __webpack_require__(200);
+	var ResultSection_1 = __webpack_require__(201);
+	var Track = (function (_super) {
+	    __extends(Track, _super);
+	    function Track(props) {
 	        _super.call(this, props);
-	        this.entry = this.props.entry;
+	        this.store = this.props.store;
+	        this.state = this.store.current(this.props.track);
 	    }
-	    AnswerSection.prototype.handleAnswer = function (key, e) {
-	        QAActions_1.default.answer(key);
+	    Track.prototype.handleAnswer = function (key, e) {
+	        QAActions_1.default.answer(this.props.track, key);
 	    };
-	    AnswerSection.prototype.handleBack = function (e) {
-	        QAActions_1.default.back();
+	    Track.prototype.handleBack = function (e) {
+	        QAActions_1.default.back(this.props.track);
 	    };
-	    AnswerSection.prototype.render = function () {
-	        var widgets = [];
-	        for (var key in this.props.answers) {
-	            var next = this.props.answers[key];
-	            widgets.push(" ");
-	            widgets.push(React.createElement("button", {className: "btn btn-primary", onClick: this.handleAnswer.bind(this, key), key: key}, key));
+	    Track.prototype.handleChange = function () {
+	        var qstate = this.store.current(this.props.track);
+	        this.setState(qstate);
+	    };
+	    Track.prototype.componentDidMount = function () {
+	        this.store.addChangeListener(this.handleChange.bind(this));
+	    };
+	    Track.prototype.componentWillUnmount = function () {
+	        this.store.removeChangeListener(this.handleChange.bind(this));
+	    };
+	    Track.prototype.render = function () {
+	        var qstate = this.store.current(this.props.track);
+	        // TODO: extract to Result component
+	        if (qstate.result) {
+	            return React.createElement(ResultSection_1.default, {result: qstate.result});
 	        }
-	        var currentAnswers = this.entry.getAnswers();
-	        return React.createElement("div", null, currentAnswers.length == 0 ? null :
-	            React.createElement("button", {className: "btn btn-default", onClick: this.handleBack.bind(this)}, "回上一題"), " ", widgets);
+	        // render result
+	        return React.createElement("div", {className: "jumbotron jumbotron-track"}, React.createElement(QuestionSection_1.default, {title: qstate.title, subtitle: qstate.subtitle}), React.createElement(AnswerSection_1.default, {answers: qstate.answers, store: this.store, track: this.props.track}));
 	    };
-	    return AnswerSection;
+	    return Track;
 	}(React.Component));
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = AnswerSection;
+	exports.default = Track;
 
 
 /***/ },
@@ -22575,15 +22579,17 @@
 	    /**
 	     * @param  {string} text
 	     */
-	    QAActionsStatic.prototype.answer = function (key) {
+	    QAActionsStatic.prototype.answer = function (trackId, key) {
 	        AppDispatcher_1.default.dispatch({
 	            "actionType": QAActionID_1.default.QA_ANSWER,
-	            "key": key
+	            "key": key,
+	            "track": trackId
 	        });
 	    };
-	    QAActionsStatic.prototype.back = function () {
+	    QAActionsStatic.prototype.back = function (trackId) {
 	        AppDispatcher_1.default.dispatch({
-	            "actionType": QAActionID_1.default.QA_BACK
+	            "actionType": QAActionID_1.default.QA_BACK,
+	            "track": trackId
 	        });
 	    };
 	    return QAActionsStatic;
@@ -22938,13 +22944,58 @@
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var React = __webpack_require__(2);
+	var QAActions_1 = __webpack_require__(193);
+	var AnswerSection = (function (_super) {
+	    __extends(AnswerSection, _super);
+	    function AnswerSection(props) {
+	        _super.call(this, props);
+	        this.store = this.props.store;
+	    }
+	    AnswerSection.prototype.handleAnswer = function (key, e) {
+	        QAActions_1.default.answer(this.props.track, key);
+	    };
+	    AnswerSection.prototype.handleBack = function (e) {
+	        QAActions_1.default.back(this.props.track);
+	    };
+	    AnswerSection.prototype.render = function () {
+	        var widgets = [];
+	        for (var key in this.props.answers) {
+	            var next = this.props.answers[key];
+	            widgets.push(" ");
+	            widgets.push(React.createElement("button", {className: "btn btn-primary", onClick: this.handleAnswer.bind(this, key), key: key}, key));
+	        }
+	        var currentAnswers = this.store.getAnswers(this.props.track);
+	        return React.createElement("div", null, currentAnswers.length == 0 ? null :
+	            React.createElement("button", {className: "btn btn-default", onClick: this.handleBack.bind(this)}, "回上一題"), " ", widgets);
+	    };
+	    return AnswerSection;
+	}(React.Component));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = AnswerSection;
+
+
+/***/ },
+/* 200 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(2);
 	var QuestionSection = (function (_super) {
 	    __extends(QuestionSection, _super);
 	    function QuestionSection(props) {
 	        _super.call(this, props);
 	    }
 	    QuestionSection.prototype.render = function () {
-	        return React.createElement("h2", {className: "display-3"}, this.props.title);
+	        var comps = [React.createElement("h2", {key: "title", className: "display-3"}, this.props.title)];
+	        if (this.props.subtitle) {
+	            comps.push(React.createElement("p", {className: "lead"}, this.props.subtitle));
+	        }
+	        return React.createElement("div", null, comps);
 	    };
 	    return QuestionSection;
 	}(React.Component));
@@ -22953,16 +23004,67 @@
 
 
 /***/ },
-/* 200 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	__webpack_require__(201);
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var React = __webpack_require__(2);
+	var ResultSection = (function (_super) {
+	    __extends(ResultSection, _super);
+	    function ResultSection(props) {
+	        _super.call(this, props);
+	    }
+	    ResultSection.prototype.render = function () {
+	        return React.createElement("div", {className: "jumbotron"}, React.createElement("h2", {className: "display-3"}, this.props.result));
+	    };
+	    return ResultSection;
+	}(React.Component));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = ResultSection;
+
+
+/***/ },
+/* 202 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	__webpack_require__(203);
 	var QAMachine = (function () {
 	    function QAMachine(states) {
 	        this.idx = 0;
 	        this.states = states || {};
 	    }
+	    // a naive normalizer
+	    QAMachine.normalize = function (m, obj) {
+	        if (!obj)
+	            return obj;
+	        var ret = {};
+	        var idx = m.state(ret);
+	        if (obj.title)
+	            ret.title = obj.title;
+	        if (obj.payload)
+	            ret.payload = obj.payload;
+	        if (obj.result)
+	            ret.result = obj.result;
+	        if (obj.answers) {
+	            ret.answers = {};
+	            var keys = Object.keys(obj.answers);
+	            keys.forEach(function (k) {
+	                ret.answers[k] = QAMachine.normalize(m, obj.answers[k]);
+	            });
+	        }
+	        return idx;
+	    };
+	    QAMachine.fromJSON = function (obj) {
+	        var m = new QAMachine({});
+	        QAMachine.normalize(m, obj);
+	        return m;
+	    };
 	    QAMachine.prototype.nextIndex = function (idx) {
 	        if (this.states[idx]) {
 	            return this.nextIndex(idx + 1);
@@ -22989,6 +23091,7 @@
 	        return this.get(idx);
 	    };
 	    QAMachine.prototype.queryFrom = function (input, current) {
+	        if (input === void 0) { input = []; }
 	        if (input.length == 0) {
 	            return current;
 	        }
@@ -22999,6 +23102,7 @@
 	        return this.queryFrom(input, next);
 	    };
 	    QAMachine.prototype.query = function (input, idx) {
+	        if (input === void 0) { input = []; }
 	        if (idx === void 0) { idx = 0; }
 	        return this.queryFrom(input.concat([]), this.states[idx]);
 	    };
@@ -23009,13 +23113,13 @@
 
 
 /***/ },
-/* 201 */
+/* 203 */
 /***/ function(module, exports) {
 
 
 
 /***/ },
-/* 202 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23024,62 +23128,87 @@
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var EventEmitter = __webpack_require__(203);
+	var EventEmitter = __webpack_require__(205);
 	var AppDispatcher_1 = __webpack_require__(194);
 	var QAActionID_1 = __webpack_require__(198);
+	var querystring = __webpack_require__(190);
+	__webpack_require__(203);
 	var CHANGE_EVENT = 'change';
 	var EntryStore = (function (_super) {
 	    __extends(EntryStore, _super);
-	    function EntryStore(m, initState) {
+	    function EntryStore(m) {
 	        var _this = this;
 	        _super.call(this);
 	        this.machine = m;
-	        this.initState = initState;
-	        this.answers = [];
+	        this.tracks = {};
 	        AppDispatcher_1.default.register(function (a) {
 	            switch (a.actionType) {
 	                case QAActionID_1.default.QA_ANSWER:
-	                    _this.push(a.key);
+	                    _this.push(a.track, a.key);
 	                    break;
 	                case QAActionID_1.default.QA_BACK:
-	                    _this.pop();
+	                    _this.pop(a.track);
 	                    break;
 	            }
 	        });
 	    }
-	    EntryStore.prototype.push = function (a) {
-	        this.answers.push(a);
+	    EntryStore.prototype.push = function (trackId, a) {
+	        if (!this.tracks[trackId]) {
+	            this.tracks[trackId] = [];
+	        }
+	        this.tracks[trackId].push(a);
 	        this.emitChange();
 	    };
-	    EntryStore.prototype.pop = function () {
-	        this.answers.pop();
+	    EntryStore.prototype.pop = function (trackId) {
+	        if (this.tracks[trackId]) {
+	            this.tracks[trackId].pop();
+	        }
 	        this.emitChange();
 	    };
-	    EntryStore.prototype.getAnswers = function () {
-	        return this.answers;
+	    EntryStore.prototype.getAnswers = function (trackId) {
+	        return this.tracks[trackId] || [];
 	    };
 	    // set answers without echoing
-	    EntryStore.prototype.setAnswers = function (answers) {
-	        this.answers = answers;
+	    EntryStore.prototype.setAnswers = function (trackId, answers) {
+	        this.tracks[trackId] = answers;
 	    };
 	    EntryStore.prototype.reset = function () {
-	        this.answers = [];
+	        for (var key in this.tracks) {
+	            this.tracks[key] = [];
+	        }
 	        this.emitChange();
 	    };
-	    EntryStore.prototype.current = function () {
-	        console.log("current answers", this.answers);
-	        return this.machine.query(this.answers, this.initState);
+	    /**
+	     * query the current state by the track ID.
+	     */
+	    EntryStore.prototype.current = function (trackId) {
+	        return this.machine.query(this.tracks[trackId] || [], trackId);
 	    };
 	    /**
-	     * You must tell it where to start the state machine.
+	     * get the next state from the current state by "answer"
 	     */
-	    EntryStore.prototype.query = function (input, init) {
-	    };
-	    EntryStore.prototype.next = function (answer, current) {
-	        return this.machine.next(answer, current);
+	    EntryStore.prototype.next = function (a, current) {
+	        return this.machine.next(a, current);
 	    };
 	    EntryStore.prototype.emitChange = function () {
 	        this.emit(CHANGE_EVENT);
+	    };
+	    EntryStore.prototype.loadQueryString = function (qs) {
+	        var params = querystring.parse(location.search);
+	        for (var key in params) {
+	            this.tracks[key] = params[key].split(/,/);
+	            console.info("loaded tracks", this.tracks, "from", qs);
+	        }
+	    };
+	    /**
+	     * serialize track states to query string
+	     */
+	    EntryStore.prototype.serialize = function () {
+	        var params = [];
+	        for (var key in this.tracks) {
+	            params[key] = this.tracks[key].join(',');
+	        }
+	        return querystring.stringify(params);
 	    };
 	    /**
 	     * @param {function} callback
@@ -23100,7 +23229,7 @@
 
 
 /***/ },
-/* 203 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
