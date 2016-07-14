@@ -47,7 +47,7 @@ export default class Track extends React.Component<TrackProps, State> {
     public render() {
         var qstate = this.store.current(this.track);
         return <div className="jumbotron">
-                <QuestionSection title={qstate.question}></QuestionSection>
+                <QuestionSection title={qstate.title}></QuestionSection>
                 <AnswerSection answers={qstate.answers} store={this.store} track={this.track}>
                 </AnswerSection>
             </div>

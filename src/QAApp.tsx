@@ -31,7 +31,7 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
 
 
         this.tracks.push(m.state({
-            "question": "Q1 國定假日有上班嗎？",
+            "title": "Q1 國定假日有上班嗎？",
             "answers": {
                 "有": m.state({ "result": "你沒差" }),
                 "沒有": m.state({ "result": "你少七天假" })
@@ -39,13 +39,13 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
         }));
 
         this.tracks.push(m.state({
-            "question": "Q2 你是勞工嗎？",
+            "title": "Q2 你是勞工嗎？",
             "answers": {
                 "是": m.state({
-                    "question": "你是領月薪還是時薪呢?",
+                    "title": "你是領月薪還是時薪呢?",
                     "answers": {
                         "月薪": m.state({
-                            "question": "你週六有加班嗎? 加班幾小時?",
+                            "title": "你週六有加班嗎? 加班幾小時?",
                             "answers": {
                                 "沒有加班": m.state({
                                     "result": "此次勞基法修法對你沒有影響。"
@@ -68,7 +68,7 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
                     }
                 }),
                 "不是": m.state({
-                    "question": "請回家 XD",
+                    "title": "請回家 XD",
                     "payload": { "result": "請回家 XD" },
                 })
             }

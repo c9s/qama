@@ -1,6 +1,7 @@
 import EventEmitter = require('eventemitter3');
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import QAActions from "../actions/QAActionID";
+import "../QAState";
 
 const CHANGE_EVENT = 'change';
 
@@ -69,15 +70,15 @@ export default class EntryStore extends EventEmitter {
   /**
    * query the current state by the track ID.
    */
-  public current(trackId: number) {
+  public current(trackId: number) : QAState {
     return this.machine.query(this.tracks[trackId] || [], trackId);
   }
 
   /**
    * get the next state from the current state by "answer"
    */
-  public next(answer:string, current) {
-    return this.machine.next(answer, current);
+  public next(a:string, current:QAState) : QAState {
+    return this.machine.next(a, current);
   }
 
   public emitChange(): void {
