@@ -21,7 +21,6 @@ export default class AnswerSection extends React.Component<AnswerProps, AnswerSt
     }
 
     public handleAnswer(key, e) {
-        console.log("handleAnswer", this.props.track, key);
         QAActions.answer(this.props.track, key);
     }
 

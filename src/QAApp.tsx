@@ -73,7 +73,6 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
                 })
             }
         }));
-        console.log("tracks",this.tracks);
         this.store = new EntryStore(this.machine);
     }
 
@@ -90,7 +89,6 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
     public componentDidMount() : void {
         this.store.addChangeListener(this.handleChange.bind(this));
         this.unlistenHistory = this.history.listen(this.handleHistory.bind(this));
-        // location is global
         this.handleHistory({ "action": "POP", "search": location.search });
     }
 
@@ -102,7 +100,6 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
 
     public handleChange() {
         var qs = this.store.serialize();
-        console.log(qs);
         this.history.push({
             "pathname": document.location.pathname,
             "search": qs ? ("?" + qs) : ""
