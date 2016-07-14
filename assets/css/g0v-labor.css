@@ -1,15 +1,18 @@
 body {
-  background: #620c15; }
+  background: #353535; }
 
 .jumbotron {
-  background: #8F121F;
-  color: #f0f0f0; }
+  border-left: 20px solid #c1192b;
+  border-radius: 0 3rem;
+  background: #4E4E4E;
+  color: #f0f0f0;
+  box-shadow: -3px 3px 10px rgba(0, 0, 0, 0.5); }
   .jumbotron .btn-default {
     background: #000;
     color: #fff; }
   .jumbotron .btn-primary {
     color: #000;
-    background: #FADA00;
-    border-color: #615500; }
+    background: #FFCE00;
+    border-color: #665200; }
 
-/*# sourceMappingURL=g0v-bootstrap.css.map */
+/*# sourceMappingURL=g0v-labor.css.map */
