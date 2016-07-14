@@ -9,30 +9,26 @@ interface TrackProps {
     track: number;
 }
 
-export default class Track extends React.Component<TrackProps, State> {
+export default class Track extends React.Component<TrackProps, QAState> {
 
     protected store: any;
-
-    protected track: number;
 
     constructor(props : TrackProps) {
         super(props);
         this.store = this.props.store;
-        this.track = this.props.track;
-        this.state = this.store.current(this.track);
-        console.log(this.track,this.state);
+        this.state = this.store.current(this.props.track);
     }
 
     public handleAnswer(key, e) {
-        QAActions.answer(this.track, key);
+        QAActions.answer(this.props.track, key);
     }
 
     public handleBack(e) {
-        QAActions.back(this.track);
+        QAActions.back(this.props.track);
     }
 
     public handleChange() {
-        var qstate = this.store.current(this.track);
+        var qstate = this.store.current(this.props.track);
         this.setState(qstate);
     }
 
@@ -45,10 +41,20 @@ export default class Track extends React.Component<TrackProps, State> {
     }
 
     public render() {
-        var qstate = this.store.current(this.track);
+        var qstate = this.store.current(this.props.track);
+
+        // TODO: extract to Result component
+        if (qstate.result) {
+            return <div className="jumbotron">{qstate.result}</div>;
+        }
+
+        // render result
         return <div className="jumbotron">
                 <QuestionSection title={qstate.title}></QuestionSection>
-                <AnswerSection answers={qstate.answers} store={this.store} track={this.track}>
+                <AnswerSection 
+                        answers={qstate.answers} 
+                        store={this.store} 
+                        track={this.props.track}>
                 </AnswerSection>
             </div>
             ;

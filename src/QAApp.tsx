@@ -78,48 +78,36 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
     }
 
     private handleHistory(location : Location) {
-        switch(location.action) {
+        switch (location.action) {
             case "POP": {
-            /*
-             * FIXME: load track ID
-              let query = queryString.parse(location.search);
-              let answers = query.answers ? query.answers.split(",") : [];
-              this.store.setAnswers(answers);
-              this.setState({ "qState" : this.store.current() } as QAAppState);
-              */
-              break;
+                this.store.loadQueryString(location.search);
+                break;
             }
             default:
         }
     }
 
-    public componentDidMount() :void {
-        // this.store.addChangeListener(this.handleChange.bind(this));
+    public componentDidMount() : void {
+        this.store.addChangeListener(this.handleChange.bind(this));
         this.unlistenHistory = this.history.listen(this.handleHistory.bind(this));
         // location is global
         this.handleHistory({ "action": "POP", "search": location.search });
     }
 
-    public componentWillUnmount() :void {
-        // this.store.removeChangeListener(this.handleChange.bind(this));
+    public componentWillUnmount() : void {
+        this.store.removeChangeListener(this.handleChange.bind(this));
         this.unlistenHistory();
         this.unlistenHistory = null;
     }
 
-    /*
-    FIXME: set track Id
     public handleChange() {
-        var current = this.store.current();
-        var { answers } = this.store;
-        if (answers.length) {
-            var query = queryString.stringify({ "answers": answers.join(",") });
-            this.history.push({ "pathname": document.location.pathname, "search": "?" + query });
-        } else {
-            this.history.push({ "pathname": document.location.pathname, "search": "" });
-        }
-        this.setState({"qState" : current} as QAAppState);
+        var qs = this.store.serialize();
+        console.log(qs);
+        this.history.push({
+            "pathname": document.location.pathname,
+            "search": qs ? ("?" + qs) : ""
+        });
     }
-    */
 
     public render() {
         var trackComponents = [];

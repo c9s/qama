@@ -1,6 +1,7 @@
 import EventEmitter = require('eventemitter3');
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import QAActions from "../actions/QAActionID";
+import * as querystring from "query-string";
 import "../QAState";
 
 const CHANGE_EVENT = 'change';
@@ -83,6 +84,21 @@ export default class EntryStore extends EventEmitter {
 
   public emitChange(): void {
     this.emit(CHANGE_EVENT);
+  }
+
+
+  public loadQueryString(qs:string) {
+    let params = querystring.parse(location.search);
+    if (params) {
+      this.tracks = params;
+    }
+  }
+
+  /**
+   * serialize track states to query string
+   */
+  public serialize():string {
+    return querystring.stringify(this.tracks);
   }
 
   /**
