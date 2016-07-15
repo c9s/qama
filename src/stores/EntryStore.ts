@@ -89,8 +89,16 @@ export default class EntryStore extends EventEmitter {
 
   public loadQueryString(qs:string) {
     let params = querystring.parse(location.search);
-    for (let key in params) {
-      this.tracks[key] = params[key].split(/,/);
+    let pkeys = Object.keys(params);
+    let keys = Object.keys(this.tracks);
+    for (let k of pkeys) {
+      if (keys.indexOf(k) === -1) {
+        keys.push(k);
+      }
+    }
+    for (let key of keys) {
+      let track = params[key] || '';
+      this.tracks[key] = track ? track.split(/,/) : [];
       console.info("loaded tracks",this.tracks, "from", qs);
     }
   }
@@ -101,7 +109,8 @@ export default class EntryStore extends EventEmitter {
   public serialize():string {
     var params = [];
     for (let key in this.tracks) {
-      params[key] = this.tracks[key].join(',');
+      let param = this.tracks[key].join(',');
+      params[key] = param || undefined;
     }
     return querystring.stringify(params);
   }

@@ -80,16 +80,21 @@ export default class QAApp extends React.Component<QAAppProps, QAAppState> {
         switch (location.action) {
             case "POP": {
                 this.store.loadQueryString(location.search);
+                // rerender without triggering event emitter
+                this.forceUpdate();
                 break;
             }
             default:
         }
     }
 
+    public componentWillMount() : void {
+        this.handleHistory({ "action": "POP", "search": location.search });
+        this.unlistenHistory = this.history.listen(this.handleHistory.bind(this));
+    }
+
     public componentDidMount() : void {
         this.store.addChangeListener(this.handleChange.bind(this));
-        this.unlistenHistory = this.history.listen(this.handleHistory.bind(this));
-        this.handleHistory({ "action": "POP", "search": location.search });
     }
 
     public componentWillUnmount() : void {
