@@ -29,8 +29,7 @@ export default class Track extends React.Component<TrackProps, QAState> {
     }
 
     public handleChange() {
-        var qstate = this.store.current(this.props.track);
-        this.setState(qstate);
+        this.forceUpdate();
     }
 
     public componentDidMount() : void {
