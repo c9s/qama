@@ -89,16 +89,18 @@ export default class EntryStore extends EventEmitter {
 
   public loadQueryString(qs:string) {
     let params = querystring.parse(location.search);
-    let pkeys = Object.keys(params);
+    let paramNames = Object.keys(params);
     let keys = Object.keys(this.tracks);
-    for (let k of pkeys) {
+    for (let k of paramNames) {
       if (keys.indexOf(k) === -1) {
         keys.push(k);
       }
     }
     for (let key of keys) {
-      let track = params[key] || '';
-      this.tracks[key] = track ? track.split(/,/) : [];
+      this.tracks[key] =
+        typeof params[key] === "string"
+          ? params[key].split(/,/)
+          : [];
       console.info("loaded tracks",this.tracks, "from", qs);
     }
   }
